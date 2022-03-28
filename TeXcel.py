@@ -1,7 +1,7 @@
 '''
 Program: TeXcel
 Authon: Dario Chiaiese
-Version: 2.2.0
+Version: 2.2.1
 Licence: GPLv3
 
 Description: This program connects to an Excel file, abstracts a table and finally outputs it in LaTeX format. 
