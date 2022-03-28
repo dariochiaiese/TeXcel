@@ -74,6 +74,8 @@ Options for texify:
    -L specifies the label to use in LaTeX
     
    -D specifies the divisors of the table to use (e.g. {l|c|r})
+   
+   -R tells the program to add an horizontal line for each row
     
    -o specifies to save the output in a file. If no path is provided a window will be prompted
     
