@@ -86,7 +86,7 @@ def create_matrix(data):
    
 #----------------------------------------------------------------LATEX FUNCTIONS-------------------------------------------------------------------------
     
-def to_latex(mat, title = None, label = None, div = None):
+def to_latex(mat, title = None, label = None, div = None, divide_row = False):
 #takes as input a matrix and transforms it according to the latex format and the options passed by the user
 #PLEASE NOTE_ that I will use [] instead of {}, and then replace it, since {} is ambiguous for Python in string formatting
 #div is the divisors and the aligment the user wants to use for the table: e.g. {l|c|r}
