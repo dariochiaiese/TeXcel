@@ -35,15 +35,15 @@ will read the second sheet in the file, using as header row 6 (Python starts fro
 **Here follow all the commands and their options.**
 
 
-   -copyright: displays the copyright.
+    -copyright: displays the copyright.
 
-   -help: shows the help.
+    -help: shows the help.
 
-   -quit: exits the program.
+    -quit: exits the program.
 
-   -texify: transforms a sheet into a given Excel file into a LaTeX code.
+    -texify: transforms a sheet into a given Excel file into a LaTeX code.
    
-Options:
+Options for texify:
 
    -p specifies the path of the file. If no argument is specified a window will be prompted.
     
@@ -65,8 +65,8 @@ Options:
     
 
 
-   -setwd: changes the working directory of the script. A window will prompted.
+    -setwd: changes the working directory of the script. A window will prompted.
    
-Options:
+Options for setwd:
 
    -m if this option is provided a manual path must be specified after it.
