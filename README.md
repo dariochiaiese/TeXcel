@@ -15,9 +15,10 @@ This script relies on two packages you may install before using it:
     
 
 **NOTE THAT** YOU HAVE TO INSTALL THESE THREE DEPENDENCIES BEFORE USING THE PROGRAM, otherwise an error will be raised.
-To do so, open the terminal and type, for instance,
+In order to install the missing requirements, set the working directory of the terminal in the folder of this script. Then
+type
 
-    python -m pip install pandas
+    python -m pip install -r requirements.txt
 
 
 
