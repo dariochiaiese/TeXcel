@@ -8,6 +8,12 @@ Use texify -p to transform an Excel table into a LaTeX code. You can customize t
 This script relies on two packages you may install before using it: 
     pandas - to convert excel tables into dataframes    
     tkinter - to display GUIs
+    openpyxl - necessary to interact with excel files
+
+**NOTE THAT** YOU HAVE TO INSTALL THESE THREE DEPENDENCIES BEFORE USING THE PROGRAM, otherwise an error will be raised.
+To do so, open the terminal and type, for instance,
+
+    python -m pip install pandas
 
 
 **Where to start**
