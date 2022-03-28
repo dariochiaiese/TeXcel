@@ -6,9 +6,13 @@ Use the command line interface to use the program.
 Use texify -p to transform an Excel table into a LaTeX code. You can customize the output by adding options. Note that the program has been tested only on Windows 10 and 11 and that, in any case, the author doesn't take any responsibility for eventual damages caused to hardware or data by this software. 
 
 This script relies on two packages you may install before using it: 
-    pandas - to convert excel tables into dataframes    
-    tkinter - to display GUIs
-    openpyxl - necessary to interact with excel files
+
+   pandas - to convert excel tables into dataframes    
+    
+   tkinter - to display GUIs
+    
+   openpyxl - necessary to interact with excel files
+    
 
 **NOTE THAT** YOU HAVE TO INSTALL THESE THREE DEPENDENCIES BEFORE USING THE PROGRAM, otherwise an error will be raised.
 To do so, open the terminal and type, for instance,
