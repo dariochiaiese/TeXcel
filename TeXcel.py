@@ -1,7 +1,7 @@
 '''
 Program: TeXcel
 Authon: Dario Chiaiese
-Version: 2.2.1
+Version: 2.2.3
 Licence: GPLv3
 
 Description: This program connects to an Excel file, abstracts a table and finally outputs it in LaTeX format. 
@@ -69,8 +69,16 @@ def to_latex(mat, title = None, label = None, div = None):
 #takes as input a matrix and transforms it according to the latex format and the options passed by the user
 #PLEASE NOTE_ that I will use [] instead of {}, and then replace it, since {} is ambiguous for Python in string formatting
 #div is the divisors and the aligment the user wants to use for the table: e.g. {l|c|r}
+    
+    if not div: #If div has not been specified by the user, it must generated automatically
+        div = "[|"
+        for i in range(len(mat[0])): #there must be as indicator as the columns in the matrix
+            div += "l|"
+        div += "]"
+
+
     latex = """
-    \\begin[table]
+    \\begin[table](h!)
     \\begin[center]
         \\caption[{}]
         \\label[tab:{}]            
@@ -90,7 +98,7 @@ def to_latex(mat, title = None, label = None, div = None):
         row = ""
         for element in line:
             row += str(element) + " & "
-        row = row[:-2] + "\\\ \n" 
+        row = row[:-2] + "\\\ \n" + (" \\hline \n " if divide_row else "") 
         latex += row
         
     latex += """
@@ -103,6 +111,8 @@ def to_latex(mat, title = None, label = None, div = None):
     
     latex = latex.replace("[", "{")
     latex = latex.replace("]", "}")
+    latex = latex.replace("(","[")
+    latex = latex.replace(")","]")
     
     return latex
 
@@ -150,6 +160,7 @@ def launch_console(args):
     -T specifies the title of the tabel
     -L specifies the label to use
     -D specifies the divisors to use (e.g. {l|c|r})
+    -R if called, places an \hline for each line
     -o specifies to save the output in a file
     '''
 
@@ -166,6 +177,7 @@ def launch_console(args):
         "title" : "",
         "label" : "",
         "divisors" : "",
+        "divide_row" : False,
         "output" : "",
         "err" : ""} #a dictionary containing every argument
 
@@ -186,7 +198,7 @@ def launch_console(args):
 
         latextables = []
         for mat in mats:
-            latextables.append(to_latex(mat, opt["title"], opt["label"], opt["divisors"]))
+            latextables.append(to_latex(mat, opt["title"], opt["label"], opt["divisors"], opt["divide_row"]))
     
         if opt["output"]: #saves the tables into a file
             print_output(opt["output"], latextables)
@@ -246,6 +258,7 @@ def read_texify(opts):
         "-L":"label",
         "-T":"title",
         "-D":"divisors",
+        "-R":"divide_row",
         "-o": "output"
     }
     
@@ -262,6 +275,8 @@ def read_texify(opts):
         v = open_dialog("save")
         return [o,v]
 
+    if opts[0] == "-R" and (len(opts) == 1  or not opts[1]): #option -R needs to be alone
+        return [console_dict[opts[0]], True]
 
     if opts[0] and not opts[1]: #from now on all the options need an argument to be valid
         return ["err", "No specified argument for option {}".format(opts[0])]
@@ -273,7 +288,7 @@ def read_texify(opts):
     if opts[0] == "-n":
     #names must be an array of custom names for the columns
         if opts[-1] == "": opts = opts[:-1] #last element cannot be the empty space, otherwise the columns do not match!
-        return ["names", opts[1:]]
+        return [console_dict[opts[0]], opts[1:]]
     
     if opts[0] == "-h" and str(opts[1]).isdigit():
         opts[1] = int(opts[1]) #the header must be a number and not a string
@@ -329,42 +344,6 @@ def command_breaker(comm):
 def set_working_directory(path):
     os.chdir(path)
 
-
-#----------------------------------------------------------TEST FUNCTIONS -----------------------------------------------------------------------------------------------------
-
-def test_console():
-    args = input("TeXcel console ~ ")
-    x = command_breaker(args)
-    print(x)
-
-
-def test_read():
-    print("here follows the matrix")
-    print(read_exc("test.xlsx", sn = [2], hd = 4, cols = "G:I"))
-
-def test_read2():
-    opt = {"path": "test.xlsx", 
-        "sheet_name": [2], 
-        "header": 4, 
-        "names": None, 
-        "usecols": "G:I",
-        "title" : "",
-        "label" : "",
-        "divisors" : "",
-        "err" : ""}
-
-    print(read_exc(opt["path"], sn = opt["sheet_name"], hd = opt["header"], cols = opt["usecols"]))
-
-
-
-def test_print():
-    mat = read_exc("test.xlsx", sn = [0], hd = 0)
-    print(to_latex(mat[0], "Tabella di prova", "", "{r|c|l}"))
-    
-def test_directory():
-    cwd = os.getcwd()  # Get the current working directory (cwd)
-    files = os.listdir(cwd)  # Get all the files in that directory
-    print("Files in %r: %s" % (cwd, files))
 
 #----------------------------------------------------------MAIN -----------------------------------------------------------------------------------------------------
 
