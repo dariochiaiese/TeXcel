@@ -19,15 +19,15 @@ from os import read
 import pandas
 from tkinter import Tk
 from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfilename #we'll need it in order to let the user choose the excel file he wants to convert
-import openpyxl
 
 
 def main():
     print("""Welcome to TeXcel! Type help; to display the help of the program. 
     Use texify -p to convert a file and add options to customize the output.
     Type licence to display the full licence of the program.""")    
-    readfile("copyright.txt")
+    
     os.chdir(os.path.dirname(sys.argv[0])) #changes the working directory to the script's one (sys.argv[0] is always the path of the file)
+    readfile("copyright.txt")
     console()
     
 
@@ -274,6 +274,9 @@ def read_texify(opts):
     #names must be an array of custom names for the columns
         if opts[-1] == "": opts = opts[:-1] #last element cannot be the empty space, otherwise the columns do not match!
         return ["names", opts[1:]]
+    
+    if opts[0] == "-h" and str(opts[1]).isdigit():
+        opts[1] = int(opts[1]) #the header must be a number and not a string
         
     o = console_dict[opts[0]]
     v = opts[1]
