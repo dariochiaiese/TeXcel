@@ -10,8 +10,28 @@ This script relies on two packages you may install before using it:
     tkinter - to display GUIs
 
 
+**Where to start**
+Type 
 
-Here follow all the commands and their options.
+    texify -p
+    
+in the console. A window to choose a file to read will be prompted to you, and the result in LaTeX will be displayed directly in the terminal. If you want to save the output in a file (expecially if it is a long one) you may write
+
+    texify -p -o
+    
+_Note that_ if you specify a path after -p or -o, the program will use that instead of prompting a window. For instance
+
+    texify -p myfile.xlsx -o myoutput.txt
+
+_If you don't specify any other option_, the first sheet of the file will selected. The header will be the first row and all the columns with at least one data will be read. 
+The following specification 
+   
+    texify -p -o -s 1 -h 5 -c B:D -n name surname age -L tab1
+    
+will read the second sheet in the file, using as header row 6 (Python starts from 0), as columns B, C and D and customizing the header ad "name", "surname" and "age". Also, the label in LaTeX of the table will be tab1. 
+
+
+**Here follow all the commands and their options.**
 
 -copyright: displays the copyright.
 
