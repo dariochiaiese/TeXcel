@@ -1,7 +1,7 @@
 '''
 Program: TeXcel
 Authon: Dario Chiaiese
-Version: 2.2.3
+Version: 2.3.0
 Licence: GPLv3
 
 Description: This program connects to an Excel file, abstracts a table and finally outputs it in LaTeX format. 
@@ -13,6 +13,7 @@ Dependencies:
 '''
 
 from distutils.log import error
+import importlib.util
 import sys
 import os
 from os import read
@@ -21,14 +22,34 @@ from tkinter import Tk
 from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfilename #we'll need it in order to let the user choose the excel file he wants to convert
 
 
+dependencies = ["pandas", "tkinter", "openpyxl"]
+
+
 def main():
     print("""Welcome to TeXcel! Type help; to display the help of the program. 
     Use texify -p to convert a file and add options to customize the output.
-    Type licence to display the full licence of the program.""")    
-    
+    Type licence to display the full licence of the program.""")   
+
     os.chdir(os.path.dirname(sys.argv[0])) #changes the working directory to the script's one (sys.argv[0] is always the path of the file)
-    readfile("copyright.txt")
+
+    if not check_packages(dependencies): #if the dependencies are not installed the program cannot run
+        print(""" Your python installation is missing some package. If you are in the terminal, positioned in the folder of this program,
+        you can install the requirements by typing " python -m pip install -r requirements.txt "
+        """)
+        return
+
+    readfile("copyright.txt")    
     console()
+    
+    
+def check_packages(dep):
+    READY = True
+    for pack in dep:
+        if not importlib.util.find_spec(pack):
+            print("""ATTENTION: PACKAGE {} IS NOT INSTALL ON YOU SYSTEM.
+            Please install it before using this program""".format(pack))
+            READY = False
+    return READY
     
 
 #-------------------------------------------------------------------PANDAS FUNCTIONS------------------------------------------------------------------
@@ -45,8 +66,8 @@ def read_exc(path, sn = [0], hd= 0, nms=None, cols = None):
         mats = []
         for sheet in data.values(): #THE INITIAL data IS A DICTIONARY WHERE THE KEYS ARE THE SHEET NUMBER, EVEN IF THERE IS ONLY ONE SHEET
             mats.append(create_matrix(sheet)) #each sheet is a pandas dataframe object; converts every pandas dataframe in a matrix
-    except:
-        print("An error was raised during the reading of the Excel file. Error name: ", print(Exception))
+    except Exception as e:
+        print("An error was raised during the reading of the Excel file. Error name: ", e)
         return False
 
     return mats   #mats will be a matrix of matrices; each matrix represents the valuable data of a sheet.
