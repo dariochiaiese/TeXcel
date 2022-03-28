@@ -20,7 +20,10 @@ To do so, open the terminal and type, for instance,
     python -m pip install pandas
 
 
-**Where to start**
+
+**WHERE TO START**
+
+
 Type 
 
     texify -p
