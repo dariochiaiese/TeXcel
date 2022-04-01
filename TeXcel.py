@@ -1,15 +1,15 @@
 '''
 Program: TeXcel
 Authon: Dario Chiaiese
-Version: 2.3.0
+Version: 3.1.4
 Licence: GPLv3
 
 Description: This program connects to an Excel file, abstracts a table and finally outputs it in LaTeX format. 
 
 Dependencies: 
-    pandas - to convert excel tables into dataframes
-    openpyxl - to interact with excel files
+    pandas - to convert excel tables into dataframes    
     tkinter - to display GUIs
+    openpyxl - to interact with excel files
 '''
 
 from distutils.log import error
@@ -20,37 +20,22 @@ from os import read
 import pandas
 from tkinter import Tk
 from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfilename #we'll need it in order to let the user choose the excel file he wants to convert
-
-
-dependencies = ["pandas", "tkinter", "openpyxl"]
-
+import openpyxl
 
 def main():
     print("""Welcome to TeXcel! Type help; to display the help of the program. 
     Use texify -p to convert a file and add options to customize the output.
     Type licence to display the full licence of the program.""")   
 
-    os.chdir(os.path.dirname(sys.argv[0])) #changes the working directory to the script's one (sys.argv[0] is always the path of the file)
+    path = os.path.dirname(sys.argv[0])
+    if os.path.isdir(path):
+        os.chdir(os.path.dirname(sys.argv[0])) #changes the working directory to the script's one (sys.argv[0] is always the path of the file)
+    else: #changes the directory to the current one plus the path of the file
+        os.chdir(os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))) 
 
-    if not check_packages(dependencies): #if the dependencies are not installed the program cannot run
-        print(""" Your python installation is missing some package. If you are in the terminal, positioned in the folder of this program,
-        you can install the requirements by typing " python -m pip install -r requirements.txt "
-        """)
-        return
-
+    
     readfile("copyright.txt")    
     console()
-    
-    
-def check_packages(dep):
-    READY = True
-    for pack in dep:
-        if not importlib.util.find_spec(pack):
-            print("""ATTENTION: PACKAGE {} IS NOT INSTALL ON YOU SYSTEM.
-            Please install it before using this program""".format(pack))
-            READY = False
-    return READY
-    
 
 #-------------------------------------------------------------------PANDAS FUNCTIONS------------------------------------------------------------------
 
@@ -90,6 +75,7 @@ def to_latex(mat, title = None, label = None, div = None, divide_row = False):
 #takes as input a matrix and transforms it according to the latex format and the options passed by the user
 #PLEASE NOTE_ that I will use [] instead of {}, and then replace it, since {} is ambiguous for Python in string formatting
 #div is the divisors and the aligment the user wants to use for the table: e.g. {l|c|r}
+#divide_row, if true, adds an \hline for each row.
     
     if not div: #If div has not been specified by the user, it must generated automatically
         div = "[|"
@@ -244,9 +230,6 @@ def launch_console(args):
     elif cmd == "help":
         readfile("help.txt")
 
-    elif cmd == "licence":
-        readfile("licence.txt")
-
     elif cmd == "copyright":
         readfile("copyright.txt")
 
@@ -366,7 +349,43 @@ def set_working_directory(path):
     os.chdir(path)
 
 
+#----------------------------------------------------------TEST FUNCTIONS -----------------------------------------------------------------------------------------------------
+
+def test_console():
+    args = input("TeXcel console ~ ")
+    x = command_breaker(args)
+    print(x)
+
+
+def test_read():
+    print("here follows the matrix")
+    print(read_exc("test.xlsx", sn = [2], hd = 4, cols = "G:I"))
+
+def test_read2():
+    opt = {"path": "test.xlsx", 
+        "sheet_name": [2], 
+        "header": 4, 
+        "names": None, 
+        "usecols": "G:I",
+        "title" : "",
+        "label" : "",
+        "divisors" : "",
+        "err" : ""}
+
+    print(read_exc(opt["path"], sn = opt["sheet_name"], hd = opt["header"], cols = opt["usecols"]))
+
+
+
+def test_print():
+    mat = read_exc("test.xlsx", sn = [0], hd = 0)
+    print(to_latex(mat[0], "Tabella di prova", "", "{r|c|l}"))
+    
+def test_directory():
+    cwd = os.getcwd()  # Get the current working directory (cwd)
+    files = os.listdir(cwd)  # Get all the files in that directory
+    print("Files in %r: %s" % (cwd, files))
+
 #----------------------------------------------------------MAIN -----------------------------------------------------------------------------------------------------
 
 # MAIN SECTION
-main()
+#main() #redundant since __init__.py directly runs main()
