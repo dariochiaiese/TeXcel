@@ -80,6 +80,11 @@ Options for texify:
    -o specifies to save the output in a file. If no path is provided a window will be prompted
     
 
+   -longtable: works exaclty like texify, but outputs the table using the LaTeX package "longtable" format; it's useful when the table contains many rows and has to be displayed on multiple pages.
+   
+   
+Options for longtable: **the same of texify**
+
 
     -setwd: changes the working directory of the script. A window will prompted.
    
