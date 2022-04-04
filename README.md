@@ -19,6 +19,7 @@ This script relies on three packages:
     
 
 
+
 ### Installing with PIP
 
 
@@ -32,7 +33,8 @@ On MacOS or on Linux:
       python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple texcel
 
 
-**Note that** for the moment TeXcel is on the testing server. You may want to _use a [virtual enviroment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)  _ to use the program. 
+**Note that** for the moment TeXcel is on the testing server. You may want to use a [virtual enviroment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)  to use the program. 
+
 
 
 
@@ -76,7 +78,7 @@ The following specification
     
 will read the second sheet in the file, using as header row 6 (Python starts from 0), as columns B, C and D and customizing the header ad "name", "surname" and "age". Also, the label in LaTeX of the table will be tab1. 
 
-If you need a _long table_ (e.g. *a multipage table*) you can use the package "longtable" in LaTeX. To convert a table in the correct format, you can use, intead of texify, the command "lontable"
+If you need a _long table_ (e.g. *a multipage table*) you can use the package "longtable" in LaTeX. To convert a table in the correct format, you can use, intead of texify, the command "longtable"
 
       longtable -p -o 
 
@@ -104,7 +106,8 @@ won't output something like "%50.22" but instead "50.22%".
 ## Commands and options
 
 
- -  copyright: displays the copyright.
+ -  copyright: 
+    displays the copyright.
 
  -  help: shows the help.
 
