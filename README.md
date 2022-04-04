@@ -24,6 +24,7 @@ This script relies on three packages:
 
 
 To install TeXcel through PIP use the following command.
+
 On Windows:
 
       py -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple texcel
@@ -46,6 +47,7 @@ To install this program directly from source you can download this folder, open 
       cd \the\path\of\this\folder\texcel-main
 
 Build the package using wheel: 
+
 On Windows
 
       py -m setup.py sdist bdist_wheel
@@ -56,6 +58,7 @@ On MacOS and Linux:
 
 
 Then you can install the package:
+
 On Windows 
 
       py -m pip install -e .
