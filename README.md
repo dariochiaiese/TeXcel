@@ -26,7 +26,7 @@ type
 
 
 
-## WHERE TO START
+## Where to start
 
 
 Type 
@@ -49,7 +49,7 @@ The following specification
 will read the second sheet in the file, using as header row 6 (Python starts from 0), as columns B, C and D and customizing the header ad "name", "surname" and "age". Also, the label in LaTeX of the table will be tab1. 
 
 
-**Formatting columns**
+### Formatting columns
 
 Another issue of Excel is that even if a column of data is formatted to have a certain number of decimal places, or to display a currency, the _real_ data in Excel are still integers or floats (only if decimal places are different from 0). You can tell TeXcel to format a column to place a symbol before the numbers and to display a certain amount of decimal places. 
 For instance, if column 2 of you database contains euro with 2 decimal places, you can use the option 
@@ -67,7 +67,7 @@ won't output something like "%50.22" but instead "50.22%".
 
 
 
-**Here follow all the commands and their options.**
+## Commands and options
 
 
  -  copyright: displays the copyright.
