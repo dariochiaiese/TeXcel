@@ -68,6 +68,8 @@ Options for texify:
    -c specifies the columns to be used. Can be integer, string or a list. If you want to select separate columns use "1,2,4" or "A,B,D"; if you want to specify an interval use the form "A:D".
     
    -n specifies a list of names to be used as header. Separate the names with a space (e.g. texify -n name age date;)
+   
+   -f formats specific columns of the table adding a symbol before the value and choosing how many decimal digits to show. Use $.2 to use the dollar symbol and show two decimal digits. You can also specify only one of the two elements, using for instace .2 or $. ; the dot must be present in anycase.
     
    -T specifies the title of the table in LaTeX
     
