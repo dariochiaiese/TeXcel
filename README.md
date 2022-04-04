@@ -119,7 +119,7 @@ won't output something like "%50.22" but instead "50.22%".
     
       -  -h  specifies the row where to start (the header containin column names)
     
-      -  -c  specifies the columns to be used. Can be integer, string or a list. If you want to select separate columns use "1,2,4" or "A,B,D"; if you want to specify an interval use the form "A:D".
+      -  -c  specifies the columns to be used. Can be integer, string or a list. If you want to select separate columns use 1,2,4 or A,B,D; if you want to specify an interval use the form A:D. **Never put a space between the letters** (e.g. _don't_ write A, B, C).
     
       -  -n  specifies a list of names to be used as header. Separate the names with a space (e.g. texify -n name age date;)
    
