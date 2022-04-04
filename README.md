@@ -48,7 +48,7 @@ To install this program directly from source you can download this folder, open 
 Build the package using wheel: 
 On Windows
 
-      py -m setup.py sdist mbuild_wheel
+      py -m setup.py sdist bdist_wheel
 
 On MacOS and Linux:
 
