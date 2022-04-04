@@ -85,30 +85,26 @@ won't output something like "%50.22" but instead "50.22%".
     
       -  -c  specifies the columns to be used. Can be integer, string or a list. If you want to select separate columns use "1,2,4" or "A,B,D"; if you want to specify an interval use the form "A:D".
     
-      -n  specifies a list of names to be used as header. Separate the names with a space (e.g. texify -n name age date;)
+      -  -n  specifies a list of names to be used as header. Separate the names with a space (e.g. texify -n name age date;)
    
-      -f  formats specific columns of the table adding a symbol before the value and choosing how many decimal digits to show. Use $.2 to use the dollar symbol and show two decimal digits. You can also specify only one of the two elements, using for instace .2 or $. ; the dot must be present in anycase.
+      -  -f  formats specific columns of the table adding a symbol before the value and choosing how many decimal digits to show. Use $.2 to use the dollar symbol and show two decimal digits. You can also specify only one of the two elements, using for instace .2 or $. ; the dot must be present in anycase.
     
-      -T  specifies the title of the table in LaTeX
+      -  -T  specifies the title of the table in LaTeX
     
-      -L  specifies the label to use in LaTeX
+      -  -L  specifies the label to use in LaTeX
     
-      -D  specifies the divisors of the table to use (e.g. {l|c|r})
+      -  -D  specifies the divisors of the table to use (e.g. {l|c|r})
    
-      -R  tells the program to add an horizontal line for each row
+      -  -R  tells the program to add an horizontal line for each row
     
-      -o  specifies to save the output in a file. If no path is provided a window will be prompted
+      -  -o  specifies to save the output in a file. If no path is provided a window will be prompted
     
     
 
- -  longtable: works exaclty like texify, but outputs the table using the LaTeX package "longtable" format; it's useful when the table contains many rows and has to be displayed on multiple pages.
-   
-   
+ -  longtable: works exaclty like texify, but outputs the table using the LaTeX package "longtable" format; it's useful when the table contains many rows and has to be displayed on multiple pages.  
 Options for longtable: **the same of texify**
 
 
- -  setwd: changes the working directory of the script. A window will prompted.
-   
-Options for setwd:
+ -  setwd: changes the working directory of the script. A window will prompted. Options for setwd:
 
-   -m if this option is provided a manual path must be specified after it.
+      -  -m if this option is provided a manual path must be specified after it.
