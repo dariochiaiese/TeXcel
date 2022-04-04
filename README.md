@@ -45,6 +45,16 @@ To install this program directly from source you can download this folder, open 
 
       cd \the\path\of\this\folder\texcel-main
 
+Build the package using wheel: 
+On Windows
+
+      py -m setup.py sdist mbuild_wheel
+
+On MacOS and Linux:
+
+      python3 -m setup.py sdist bdist_wheel
+
+
 Then you can install the package:
 On Windows 
 
@@ -52,7 +62,7 @@ On Windows
 
 On MacOS and Linux:
 
-      python2 -m pip install -e .
+      python3 -m pip install -e .
 
 
 
