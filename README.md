@@ -50,14 +50,14 @@ will read the second sheet in the file, using as header row 6 (Python starts fro
 Another issue of Excel is that even if a column of data is formatted to have a certain number of decimal places, or to display a currency, the _real_ data in Excel are still integers or floats (only if decimal places are different from 0). You can tell TeXcel to format a column to place a symbol before the numbers and to display a certain amount of decimal places. 
 For instance, if column 2 of you database contains euro with 2 decimal places, you can use the option 
 
-   -f €.2 1
+      -f €.2 1
    
 where the first string is "€.2" and tells the program to use the euro symbol and to diplay 2 places, and the second one is the number of the column (remember that Python starts from 0, so the second column is column number 1).
 Formatting rules must contain the dot even if one of the two parts is useless. For instance, in order to use only the euro symbol you shall use "€." as rule, and to display only the 2 digits you shall use ".2". You can concatenate as many rules as you want. 
 
 If you use a symbol the char "%", TeXcel will automatically format the string in order to display a percentage. So 
 
-   -f %.2 1
+    -f %.2 1
   
 won't output something like "%50.22" but instead "50.22%". 
 
