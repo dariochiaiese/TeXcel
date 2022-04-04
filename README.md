@@ -1,15 +1,15 @@
 # TeXcel
 
+
 ## Installing Texcel 
 
 
+### What is Texcel
 This program reads tables from an Excel file (.xlsx or xls. files) and outputs them in LaTeX format. 
 
-Use the command line interface to use the program.
+To install TeXcel you can either use **pip** or download this branch.
 
-Use texify -p to transform an Excel table into a LaTeX code. You can customize the output by adding options. Note that the program has been tested only on Windows 10 and 11 and that, in any case, the author doesn't take any responsibility for eventual damages caused to hardware or data by this software. 
-
-This script relies on two packages you may install before using it: 
+This script relies on three packages: 
 
    -  pandas - to convert excel tables into dataframes    
     
@@ -18,11 +18,39 @@ This script relies on two packages you may install before using it:
    -  openpyxl - necessary to interact with excel files
     
 
-**NOTE THAT** YOU HAVE TO INSTALL THESE THREE DEPENDENCIES BEFORE USING THE PROGRAM, otherwise an error will be raised.
-In order to install the missing requirements, set the working directory of the terminal in the folder of this script. Then
-type
 
-    python -m pip install -r requirements.txt
+### Installing with PIP
+
+
+To install TeXcel through PIP use the following command.
+On Windows:
+
+      py -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple texcel
+
+On MacOS or on Linux:
+
+      python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple texcel
+
+
+**Note that** for the moment TeXcel is on the testing server. You may want to _use a [virtual enviroment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)  _ to use the program. 
+
+
+
+### Installing from this source
+
+
+To install this program directly from source you can download this folder, open the terminal (e.g. cmd.exe on Windows), set the working directory on this folder:
+
+      cd \the\path\of\this\folder\texcel-main
+
+Then you can install the package:
+On Windows 
+
+      py -m pip install -e .
+
+On MacOS and Linux:
+
+      python2 -m pip install -e .
 
 
 
@@ -48,8 +76,14 @@ The following specification
     
 will read the second sheet in the file, using as header row 6 (Python starts from 0), as columns B, C and D and customizing the header ad "name", "surname" and "age". Also, the label in LaTeX of the table will be tab1. 
 
+If you need a _long table_ (e.g. *a multipage table*) you can use the package "longtable" in LaTeX. To convert a table in the correct format, you can use, intead of texify, the command "lontable"
+
+      longtable -p -o 
+
+
 
 ### Formatting columns
+
 
 Another issue of Excel is that even if a column of data is formatted to have a certain number of decimal places, or to display a currency, the _real_ data in Excel are still integers or floats (only if decimal places are different from 0). You can tell TeXcel to format a column to place a symbol before the numbers and to display a certain amount of decimal places. 
 For instance, if column 2 of you database contains euro with 2 decimal places, you can use the option 
