@@ -1,6 +1,6 @@
 # TeXcel
 
-##Installing Texcel 
+## Installing Texcel 
 
 
 This program reads tables from an Excel file (.xlsx or xls. files) and outputs them in LaTeX format. 
@@ -26,7 +26,7 @@ type
 
 
 
-##WHERE TO START
+## WHERE TO START
 
 
 Type 
@@ -70,13 +70,13 @@ won't output something like "%50.22" but instead "50.22%".
 **Here follow all the commands and their options.**
 
 
-    -copyright: displays the copyright.
+ -  copyright: displays the copyright.
 
-    -help: shows the help.
+ -  help: shows the help.
 
-    -quit: exits the program.
+ -  quit: exits the program.
 
-    -texify: transforms a sheet into a given Excel file into a LaTeX code.
+ -  texify: transforms a sheet into a given Excel file into a LaTeX code.
    
 Options for texify:
 
@@ -104,13 +104,13 @@ Options for texify:
     
     
 
-      -longtable: works exaclty like texify, but outputs the table using the LaTeX package "longtable" format; it's useful when the table contains many rows and has to be displayed on multiple pages.
+ -  longtable: works exaclty like texify, but outputs the table using the LaTeX package "longtable" format; it's useful when the table contains many rows and has to be displayed on multiple pages.
    
    
 Options for longtable: **the same of texify**
 
 
-    -setwd: changes the working directory of the script. A window will prompted.
+ -  setwd: changes the working directory of the script. A window will prompted.
    
 Options for setwd:
 
