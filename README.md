@@ -106,14 +106,13 @@ won't output something like "%50.22" but instead "50.22%".
 ## Commands and options
 
 
- -  copyright: 
-    displays the copyright.
+ -  **copyright**: displays the copyright.
 
- -  help: shows the help.
+ -  **help**: shows the help.
 
- -  quit: exits the program.
+ -  **quit**: exits the program.
 
- -  texify: transforms a sheet into a given Excel file into a LaTeX code. Options for texify:
+ -  **texify**: transforms a sheet into a given Excel file into a LaTeX code. Options for texify:
       -  -p specifies the path of the file. If no argument is specified a window will be prompted.
     
       -  -s specifies the sheet name or number. Use an integer for the number or a string (e.g. "my data") for the name. You may add multiple numbers by separating them          with blanks. 
@@ -138,10 +137,10 @@ won't output something like "%50.22" but instead "50.22%".
     
     
 
- -  longtable: works exaclty like texify, but outputs the table using the LaTeX package "longtable" format; it's useful when the table contains many rows and has to be displayed on multiple pages.  
+ -  **longtable**: works exaclty like texify, but outputs the table using the LaTeX package "longtable" format; it's useful when the table contains many rows and has to be displayed on multiple pages.  
 Options for longtable: **the same of texify**
 
 
- -  setwd: changes the working directory of the script. A window will prompted. Options for setwd:
+ -  **setwd**: changes the working directory of the script. A window will prompted. Options for setwd:
 
       -  -m if this option is provided a manual path must be specified after it.
