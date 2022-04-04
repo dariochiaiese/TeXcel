@@ -1,7 +1,7 @@
 '''
 Program: TeXcel
 Authon: Dario Chiaiese
-Version: 3.1.4
+Version: 3.2.0
 Licence: GPLv3
 
 Description: This program connects to an Excel file, abstracts a table and finally outputs it in LaTeX format. 
@@ -14,6 +14,7 @@ Dependencies:
 
 from distutils.log import error
 import importlib.util
+from msilib.schema import Error
 import sys
 import os
 from os import read
@@ -123,6 +124,97 @@ def to_latex(mat, title = None, label = None, div = None, divide_row = False):
     
     return latex
 
+
+def to_latex_longtable(mat, title = None, label = None, div = None, divide_row = False):
+#takes as input a matrix and transforms it according to the latex package "longtable"  (user should import package in Latex by
+# \usepackage{longtable})
+#PLEASE NOTE_ that I will use [] instead of {}, and then replace it, since {} is ambiguous for Python in string formatting
+#div is the divisors and the aligment the user wants to use for the table: e.g. {l|c|r}
+#divide_row, if true, adds an \hline for each row.
+    
+    if not div: #If div has not been specified by the user, it must generated automatically
+        div = "[|"
+        for i in range(len(mat[0])): #there must be as indicator as the columns in the matrix
+            div += "l|"
+        div += "]"
+
+
+    latex = """
+    \\begin[longtable](h!){}    
+        \\caption[{}\label[{}]]           
+            \\hline
+            \\multicolumn[{}][| c |][Content of the table]
+            \\hline               
+    \n""".format(div, title, label, len(mat[0]))  #REMEMBER that "\" is an escape char in python
+    
+    #creates the header
+    header = ""        
+    for col in mat[0]: #mat[0] is the header
+        header += str(col) + " & " 
+    header = header[:-2] + "\\\ \n \\hline \n" #replaces the last, redundand & with the newline command \\
+        
+    latex += header #header in the first head
+    latex += """
+            \\endfirsthead
+            \\hline
+            \n"""
+    latex += header #header repeated in every new page
+    latex += """
+            \\endhead
+            
+            \\hline
+            \\endfoot               
+    \n"""
+    
+    
+    #adds the lines
+    for line in mat[1:]:
+        row = ""
+        for element in line:
+            row += str(element) + " & "
+        row = row[:-2] + "\\\ \n" + (" \\hline \n " if divide_row else "") 
+        latex += row
+        
+    latex += """            
+        \\end[longtable]
+
+    \n ----------------------------------END TABLE-----------------------------------------------
+    """
+    
+    latex = latex.replace("[", "{")
+    latex = latex.replace("]", "}")
+    latex = latex.replace("(","[")
+    latex = latex.replace(")","]")
+    
+    return latex
+
+
+def format_column(rules, mat):
+    #rules is a list of couples like [ [form1, col1], [form2, col2], ...  ]
+    #tranforms mats columns using the formatting symbol.digits . User must use the dot even if symbol or digits is useless
+    # e.g. "$." ".2" are both legal formattings
+    
+    for rule in rules:
+        
+        col = int(rule[1]) #column to be modified
+        if not "." in rule[0]: raise Exception("Formatting rules must be formed as follows: sym.dec sym. or .dec")
+        rule = rule[0].split(".")
+        sym = rule[0] #the symbol to be placed before the digits
+        dec = rule[1] #the number of decimal places
+        if not dec or not str(dec).isdigit() or int(dec) < 0: 
+            dec = 0
+        else:
+            dec = int(dec) #decimal positions to apply        
+        
+        for row in mat[1:]: #header must be excluded
+            if not str(row[col]).replace(".","").isdigit(): raise Exception("Column {} does not cointain only numbers!".format(col)) #if the column does not contain numbers, then an error must be raised
+            
+            row[col] = sym + "%.{}f".format(dec) % row[col] #e.g. if dec = 2 and sym="$" transforms 1230 into $1230.00
+        
+    
+    return mat 
+            
+ 
 #----------------------------------------------------------------OUTPUT-------------------------------------------------------------------------        
     
 def print_output(path, mats):
@@ -164,6 +256,9 @@ def launch_console(args):
     -h specifies the row where to start (the header)
     -c specifies the columns to be used. Can be integer, string or a list
     -n specifies a list of names to be used as header
+    -f specifies a formatting style for the column. -f for1 col1 for 2 col2 ...
+        E.g. $.2 indicates to place $ sign before the number and impose two decimal positions. 
+        User can write -f $.2 4 .2 6 to indicate that column 4 must have the first formatting and columnd 6 must have the other
     -T specifies the title of the tabel
     -L specifies the label to use
     -D specifies the divisors to use (e.g. {l|c|r})
@@ -175,7 +270,7 @@ def launch_console(args):
     args = args[1:] #cuts off the main command
     print("command is", cmd, "args are", args)
 
-    if cmd == "texify": 
+    if cmd == "texify" or cmd == "longtable": 
         opt = {"path": None, 
         "sheet_name": [0], 
         "header": 0, 
@@ -185,6 +280,7 @@ def launch_console(args):
         "label" : "",
         "divisors" : "",
         "divide_row" : False,
+        "formatting" : [],
         "output" : "",
         "err" : ""} #a dictionary containing every argument
 
@@ -201,19 +297,34 @@ def launch_console(args):
         if not opt["path"]:
             opt["path"] = read_texify(["-p"])[1]
         mats = read_exc(opt["path"], opt["sheet_name"], opt["header"], opt["names"], opt["usecols"])
-        if not mats: return console() #if something goes wrong, read_exc return None            
-
+        if not mats: return console() #if something goes wrong, read_exc return None
+        
+        if opt["formatting"]: #checks if formatting is imposed by the user
+            try:
+                for mat in mats:
+                    mat = format_column(opt["formatting"], mat)
+            except Exception as e:
+                print("Formatting was invalid! Error is ", e)
+            
+            
         latextables = []
-        for mat in mats:
-            latextables.append(to_latex(mat, opt["title"], opt["label"], opt["divisors"], opt["divide_row"]))
-    
+        
+        if cmd == "texify":
+            for mat in mats:
+                latextables.append(to_latex(mat, opt["title"], opt["label"], opt["divisors"], opt["divide_row"]))
+        
+        elif cmd == "longtable":
+            for mat in mats:
+                latextables.append(to_latex_longtable(mat, opt["title"], opt["label"], opt["divisors"], opt["divide_row"]))
+           
+        
         if opt["output"]: #saves the tables into a file
             print_output(opt["output"], latextables)
         else:
             for table in latextables: #just prints the tables
                 print(table)
                 
-
+    
     elif cmd == "setwd": #sets the working directory to a new path. If the user doesn not specify anything, a dialog opens
         path = ""
         if args and args[0][0] == "-m": #m stands for manual input and must be followed by a valid path without spaces
@@ -259,6 +370,7 @@ def read_texify(opts):
         "-c":"usecols",
         "-n":"names",
         "-e":"err",
+        "-f":"formatting",
         "-L":"label",
         "-T":"title",
         "-D":"divisors",
@@ -296,6 +408,16 @@ def read_texify(opts):
     
     if opts[0] == "-h" and str(opts[1]).isdigit():
         opts[1] = int(opts[1]) #the header must be a number and not a string
+        
+    if opts[0] == "-f":
+        couples = []
+        if len(opts[1:])%2 == 0: #the optional arguments must be even (couples of format, column)
+            for i in range(1, len(opts[1:]), 2):
+                couples.append( [opts[i], opts[i+1]] )
+        else:
+            return ["err" , "The arguments for -f were invalid. Aguments must be '-f format1 column1 format2 column2' and so on"]
+        return [console_dict[opts[0]], couples]
+                
         
     o = console_dict[opts[0]]
     v = opts[1]
@@ -347,45 +469,3 @@ def command_breaker(comm):
 
 def set_working_directory(path):
     os.chdir(path)
-
-
-#----------------------------------------------------------TEST FUNCTIONS -----------------------------------------------------------------------------------------------------
-
-def test_console():
-    args = input("TeXcel console ~ ")
-    x = command_breaker(args)
-    print(x)
-
-
-def test_read():
-    print("here follows the matrix")
-    print(read_exc("test.xlsx", sn = [2], hd = 4, cols = "G:I"))
-
-def test_read2():
-    opt = {"path": "test.xlsx", 
-        "sheet_name": [2], 
-        "header": 4, 
-        "names": None, 
-        "usecols": "G:I",
-        "title" : "",
-        "label" : "",
-        "divisors" : "",
-        "err" : ""}
-
-    print(read_exc(opt["path"], sn = opt["sheet_name"], hd = opt["header"], cols = opt["usecols"]))
-
-
-
-def test_print():
-    mat = read_exc("test.xlsx", sn = [0], hd = 0)
-    print(to_latex(mat[0], "Tabella di prova", "", "{r|c|l}"))
-    
-def test_directory():
-    cwd = os.getcwd()  # Get the current working directory (cwd)
-    files = os.listdir(cwd)  # Get all the files in that directory
-    print("Files in %r: %s" % (cwd, files))
-
-#----------------------------------------------------------MAIN -----------------------------------------------------------------------------------------------------
-
-# MAIN SECTION
-#main() #redundant since __init__.py directly runs main()
