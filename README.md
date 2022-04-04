@@ -76,31 +76,28 @@ won't output something like "%50.22" but instead "50.22%".
 
  -  quit: exits the program.
 
- -  texify: transforms a sheet into a given Excel file into a LaTeX code.
+ -  texify: transforms a sheet into a given Excel file into a LaTeX code. Options for texify:
+      -  -p specifies the path of the file. If no argument is specified a window will be prompted.
+    
+      -  -s specifies the sheet name or number. Use an integer for the number or a string (e.g. "my data") for the name. You may add multiple numbers by separating them          with blanks. 
+    
+      -  -h  specifies the row where to start (the header containin column names)
+    
+      -  -c  specifies the columns to be used. Can be integer, string or a list. If you want to select separate columns use "1,2,4" or "A,B,D"; if you want to specify an interval use the form "A:D".
+    
+      -n  specifies a list of names to be used as header. Separate the names with a space (e.g. texify -n name age date;)
    
-Options for texify:
-
-   -p specifies the path of the file. If no argument is specified a window will be prompted.
+      -f  formats specific columns of the table adding a symbol before the value and choosing how many decimal digits to show. Use $.2 to use the dollar symbol and show two decimal digits. You can also specify only one of the two elements, using for instace .2 or $. ; the dot must be present in anycase.
     
-   -s specifies the sheet name or number. Use an integer for the number or a string (e.g. "my data") for the name. You may add multiple numbers by separating them          with blanks. 
+      -T  specifies the title of the table in LaTeX
     
-   -h specifies the row where to start (the header containin column names)
+      -L  specifies the label to use in LaTeX
     
-   -c specifies the columns to be used. Can be integer, string or a list. If you want to select separate columns use "1,2,4" or "A,B,D"; if you want to specify an interval use the form "A:D".
-    
-   -n specifies a list of names to be used as header. Separate the names with a space (e.g. texify -n name age date;)
+      -D  specifies the divisors of the table to use (e.g. {l|c|r})
    
-   -f formats specific columns of the table adding a symbol before the value and choosing how many decimal digits to show. Use $.2 to use the dollar symbol and show two decimal digits. You can also specify only one of the two elements, using for instace .2 or $. ; the dot must be present in anycase.
+      -R  tells the program to add an horizontal line for each row
     
-   -T specifies the title of the table in LaTeX
-    
-   -L specifies the label to use in LaTeX
-    
-   -D specifies the divisors of the table to use (e.g. {l|c|r})
-   
-   -R tells the program to add an horizontal line for each row
-    
-   -o specifies to save the output in a file. If no path is provided a window will be prompted
+      -o  specifies to save the output in a file. If no path is provided a window will be prompted
     
     
 
