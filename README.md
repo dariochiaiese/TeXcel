@@ -72,11 +72,19 @@ On MacOS and Linux:
 ## Where to start
 
 
-Type 
+To use TeXcel you must have Python 3 installed on you computer. First of all, start Python on your terminal:
+
+Type <code> py </code> on Windows or <code> python3 </code> on MacOS and Linux .
+
+Then just import TeXcel and the program will open.
+
+      >>> import texcel
+
+Once the program is running, type 
 
     texify -p
     
-in the console. A window to choose a file to read will be prompted to you, and the result in LaTeX will be displayed directly in the terminal. If you want to save the output in a file (expecially if it is a long one) you may write
+A window to choose a file to read will be prompted to you, and the result in LaTeX will be displayed directly in the terminal. If you want to save the output in a file (expecially if it is a long one) you may write
 
     texify -p -o
     
