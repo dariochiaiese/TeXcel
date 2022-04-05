@@ -74,7 +74,7 @@ On MacOS and Linux:
 
 To use TeXcel you must have Python 3 installed on you computer. First of all, start Python on your terminal:
 
-Type <code> py </code> on Windows or <code> python3 </code> on MacOS and Linux .
+Type <code>py</code> on Windows or <code>python3</code> on MacOS and Linux .
 
 Then just import TeXcel and the program will open.
 
