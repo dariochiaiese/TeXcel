@@ -1,7 +1,7 @@
 '''
 Program: TeXcel
 Authon: Dario Chiaiese
-Version: 3.2.0
+Version: 3.2.1
 Licence: GPLv3
 
 Description: This program connects to an Excel file, abstracts a table and finally outputs it in LaTeX format. 
@@ -12,10 +12,6 @@ Dependencies:
     openpyxl - to interact with excel files
 '''
 
-from distutils.log import error
-import importlib.util
-from msilib.schema import Error
-import sys
 import os
 from os import read
 import pandas
@@ -28,13 +24,9 @@ def main():
     Use texify -p to convert a file and add options to customize the output.
     Type licence to display the full licence of the program.""")   
 
-    path = os.path.dirname(sys.argv[0])
-    if os.path.isdir(path):
-        os.chdir(os.path.dirname(sys.argv[0])) #changes the working directory to the script's one (sys.argv[0] is always the path of the file)
-    else: #changes the directory to the current one plus the path of the file
-        os.chdir(os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))) 
-
-    
+    path = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(path)
+        
     readfile("copyright.txt")    
     console()
 
