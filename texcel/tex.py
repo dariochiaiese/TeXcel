@@ -1,7 +1,7 @@
 '''
 Program: TeXcel
 Authon: Dario Chiaiese
-Version: 3.2.1
+Version: 3.2.3
 Licence: GPLv3
 
 Description: This program connects to an Excel file, abstracts a table and finally outputs it in LaTeX format. 
@@ -14,19 +14,28 @@ Dependencies:
 
 import os
 from os import read
+from sre_parse import SPECIAL_CHARS
 import pandas
 from tkinter import Tk
 from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfilename #we'll need it in order to let the user choose the excel file he wants to convert
 import openpyxl
 
+
+#-----------------------------------------------------------------ENVIRONMENT VARIABLES---------------------------------------------------
+
+#Special symbols for the column formatting function
+SPEC_UNITS = ["%","kg","g","lbs","m","km","cm","mm","nm"]
+
+#------------------------------------------------------------------------MAIN------------------------------------------------------------------
+
 def main():
     print("""Welcome to TeXcel! Type help; to display the help of the program. 
     Use texify -p to convert a file and add options to customize the output.
     Type licence to display the full licence of the program.""")   
-
+    
     path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(path)
-        
+    
     readfile("copyright.txt")    
     console()
 
@@ -133,7 +142,7 @@ def to_latex_longtable(mat, title = None, label = None, div = None, divide_row =
 
     latex = """
     \\begin[longtable](h!){}    
-        \\caption[{}\label[{}]]           
+        \\caption[{}\label[{}]] \\\          
             \\hline
             \\multicolumn[{}][| c |][Content of the table]
             \\hline               
@@ -200,10 +209,12 @@ def format_column(rules, mat):
         
         for row in mat[1:]: #header must be excluded
             if not str(row[col]).replace(".","").isdigit(): raise Exception("Column {} does not cointain only numbers!".format(col)) #if the column does not contain numbers, then an error must be raised
-            
-            row[col] = sym + "%.{}f".format(dec) % row[col] #e.g. if dec = 2 and sym="$" transforms 1230 into $1230.00
+            if sym.lower() in SPEC_UNITS: #special chars are to be placed after the digits
+                row[col] = "%.{}f".format(dec) % row[col] + sym #e.g. if dec = 2 and sym="%" transforms 12 into 12.00%
+            else:
+                row[col] = sym + "%.{}f".format(dec) % row[col] #e.g. if dec = 2 and sym="$" transforms 1230 into $1230.00
         
-    
+        
     return mat 
             
  
@@ -430,7 +441,7 @@ def open_dialog(opt):
 
 
 def command_breaker(comm):
-    #takes a command in input and breaks it into a list of sub commands with the main command and the couples -option value
+    #takes a command (sting) in input and breaks it into a list of sub commands with the main command and the couples -option value
 
     comm = comm.strip() #trims out blanks at the end and at the beginning    
     if not comm[-1] == ";": return ["error", "Invalid syntax. Final ';' missing"]
@@ -448,16 +459,20 @@ def command_breaker(comm):
     while i < len(comm):
         if comm[i] in ["-",";"]:
             comm = comm.strip()
-            if comm[start+2:i+1].strip()[0] in ("'", '"') and comm[start+2:i+1].strip()[-2] in ("'", '"'): #if the third char (after the first two representing the option) is " or ', and if the last is " or ', then the parameter is a phrase
+            substr = comm[start+2:i].strip() #this is the string from the first char after option -o to the last char before next option            
+            if substr and substr[0] in ("'", '"') and substr[-1] in ("'", '"'): #if the third char (after the first two representing the option) is " or ', and if the last is " or ', then the parameter is a phrase
                 pair = [comm[start : start + 2] , comm[start + 2 : i].strip()]
+                pair[1] = pair[1][1:-1] #Eliminates the quotemarks at the end and at the start of the string                
                 coms.append(pair) #if the option is a phrase (e.g. "My Title"), we don't want to separate accordin to the spaces
             else:
-                coms.append(comm[start:i].split(" ")) #appends a sub list made of [option, value] by splitting x[0] using the blank. x[0] is supposed to be a string like "-o1 value"; i-1 is due to the fact that every new option -o must be preceeded by a blank
+                coms.append(comm[start:i].strip().split(" ")) #appends a sub list made of [option, value] by splitting x[0] using the blank. x[0] is supposed to be a string like "-o1 value"; i-1 is due to the fact that every new option -o must be preceeded by a blank
             start = i
         i += 1
-        
+    
+    
     return coms
 
 
 def set_working_directory(path):
     os.chdir(path)
+
