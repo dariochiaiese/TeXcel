@@ -123,6 +123,15 @@ If you use a symbol the char "%", TeXcel will automatically format the string in
 won't output something like "%50.22" but instead "50.22%". 
 
 
+### Restarting the program
+
+If you closed TeXcel but you want to re-use in the same instance of Python where you imported it, use the function start():
+
+      >>> texcel.start()
+
+This will reopen the console and let you use the program. 
+
+
 
 ## Commands and options
 
