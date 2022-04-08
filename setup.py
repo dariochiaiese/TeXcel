@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='texcel',
-      version='3.2.0',
+      version='3.2.3',
       description='This program reads Excel tables from .xlsx (or .xls) files and outputs them in LaTeX fromat',
       url='http://github.com/dariochiaiese/texcel',
       author='Dario Chiaiese',
