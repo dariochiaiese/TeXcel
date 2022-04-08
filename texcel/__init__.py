@@ -1,2 +1,7 @@
 from . import tex
-tex.main()
+
+def start():
+    tex.main()
+
+
+start()
