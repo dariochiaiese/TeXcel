@@ -1,6 +1,6 @@
 '''
 Program: TeXcel
-Authon: Dario Chiaiese
+Author: Dario Chiaiese
 Version: 3.2.3
 Licence: GPLv3
 
@@ -14,7 +14,6 @@ Dependencies:
 
 import os
 from os import read
-from sre_parse import SPECIAL_CHARS
 import pandas
 from tkinter import Tk
 from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfilename #we'll need it in order to let the user choose the excel file he wants to convert
